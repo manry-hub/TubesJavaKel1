@@ -7,12 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.tubespjmfkel2.algorithm.Dijkstra;
+import com.tubespjmfkel2.adapter.DijkstraAdapter;
+import com.tubespjmfkel2.adapter.DijkstraAdapter.Result;
 import com.tubespjmfkel2.gui.graph.GraphManager;
 import com.tubespjmfkel2.gui.graph.GraphPanel;
 import com.tubespjmfkel2.gui.graph.PathHighlighter;
-
-import java.util.List;
 
 public class AppWindow extends JFrame {
 
@@ -50,17 +49,17 @@ public class AppWindow extends JFrame {
     }
 
     private void addEdge() {
-        String from = JOptionPane.showInputDialog("Dimulai Dari:");
+        String from = JOptionPane.showInputDialog("Dari:");
         String to = JOptionPane.showInputDialog("Menuju:");
         int w = Integer.parseInt(JOptionPane.showInputDialog("Jarak (km):"));
         gm.addEdge(from, to, w);
     }
 
     private void findPath() {
-        String start = JOptionPane.showInputDialog("Dimulai dari:");
+        String start = JOptionPane.showInputDialog("Dari:");
         String end = JOptionPane.showInputDialog("Menuju:");
 
-        Dijkstra.Result result = Dijkstra.run(gm.adj, start, end);
+        Result result = DijkstraAdapter.run(gm.adj, start, end);
 
         if (result == null) {
             JOptionPane.showMessageDialog(this, "Rute tidak ditemukan!");
@@ -72,7 +71,7 @@ public class AppWindow extends JFrame {
         StringBuilder sb = new StringBuilder();
         sb.append("Rute Terpendek\n");
         sb.append("Dari: ").append(start).append("\n");
-        sb.append("Ke:   ").append(end).append("\n\n");
+        sb.append("Menuju:   ").append(end).append("\n\n");
 
         sb.append("Urutan Rute:\n");
         for (int i = 0; i < result.path.size(); i++) {

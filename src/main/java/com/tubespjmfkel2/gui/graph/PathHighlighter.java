@@ -35,7 +35,7 @@ public class PathHighlighter {
             String d = (String) graph.getModel().getValue(dst);
 
             if (s.equals(from) && d.equals(to)) {
-                graph.setCellStyle("strokeColor=red;strokeWidth=3", new Object[] { e });
+                graph.setCellStyle("strokeColor=green;strokeWidth=3", new Object[] { e });
             }
         }
     }
