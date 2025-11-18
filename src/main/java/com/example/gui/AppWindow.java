@@ -1,9 +1,9 @@
 package com.example.gui;
 
-import com.example.graph.GraphManager;
-import com.example.graph.GraphPanel;
 import com.example.algorithm.Dijkstra;
-import com.example.graph.PathHighlighter;
+import com.example.gui.graph.GraphManager;
+import com.example.gui.graph.GraphPanel;
+import com.example.gui.graph.PathHighlighter;
 
 import java.awt.BorderLayout;
 

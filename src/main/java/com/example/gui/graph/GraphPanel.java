@@ -1,4 +1,4 @@
-package com.example.graph;
+package com.example.gui.graph;
 
 import com.mxgraph.swing.mxGraphComponent;
 
