@@ -1,4 +1,4 @@
-package com.tubesjavakel2.gui.graph;
+package com.tubespjmfkel2.gui.graph;
 
 import com.mxgraph.view.mxGraph;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class GraphManager {
         try {
             graph.insertEdge(parent, null, weight, nodeMap.get(from), nodeMap.get(to));
             adj.get(from).put(to, weight);
-            adj.get(to).put(from, weight); // undirected
+            adj.get(to).put(from, weight);
         } finally {
             graph.getModel().endUpdate();
         }

@@ -1,4 +1,4 @@
-package com.tubesjavakel2.algorithm;
+package com.tubespjmfkel2.algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;

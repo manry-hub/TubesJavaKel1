@@ -1,4 +1,4 @@
-package com.tubesjavakel2.gui.graph;
+package com.tubespjmfkel2.gui.graph;
 
 import com.mxgraph.swing.mxGraphComponent;
 
