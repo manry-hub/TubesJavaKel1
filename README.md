@@ -1,3 +1,9 @@
+# Tubes PJM F Kel 2 – Pencarian Rute Terpendek
+
+Proyek ini adalah aplikasi **GUI untuk mencari rute terpendek menuju bengkel**, menggunakan **algoritma Dijkstra** dengan menerapkan clean architecture.
+
+# Struktur Project
+
 ```
 ── tubespjmfkel2
     ├── adapter
@@ -19,4 +25,5 @@
     └── Main.java
 ```
 
-jdk 17 + jgraphx 3.9.3
+requirement: jdk 17 + jgraphx 3.9.3
+reference algorithm from https://www.baeldung.com/java-dijkstra
