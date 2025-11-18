@@ -22,7 +22,7 @@ public class AppWindow extends JFrame {
         super("Pencarian Rute Terpendek Menuju Bengkel");
 
         JButton btnAddNode = new JButton("Tambah Titik Lokasi");
-        JButton btnAddEdge = new JButton("Tambah Rute");
+        JButton btnAddEdge = new JButton("Tambah Jarak antar Titik");
         JButton btnFindPath = new JButton("Cari Rute Terpendek");
 
         btnAddNode.addActionListener(e -> addNode());
@@ -50,9 +50,9 @@ public class AppWindow extends JFrame {
     }
 
     private void addEdge() {
-        String from = JOptionPane.showInputDialog("Dari:");
+        String from = JOptionPane.showInputDialog("Mulai Dari:");
         String to = JOptionPane.showInputDialog("Menuju:");
-        int w = Integer.parseInt(JOptionPane.showInputDialog("Panjang km:"));
+        int w = Integer.parseInt(JOptionPane.showInputDialog("Jarak (km):"));
         gm.addEdge(from, to, w);
     }
 
