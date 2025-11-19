@@ -1,6 +1,9 @@
-package com.tubespjmfkel2.algorithm.graph;
+package com.tubespjmfkel2.model;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Node {
 
@@ -43,4 +46,10 @@ public class Node {
     public void setDistance(Integer distance) {
         this.distance = distance;
     }
+
+    public void reset() {
+        this.distance = Integer.MAX_VALUE;
+        this.shortestPath.clear();
+    }
+
 }

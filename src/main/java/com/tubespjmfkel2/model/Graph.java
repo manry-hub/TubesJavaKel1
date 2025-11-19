@@ -1,4 +1,4 @@
-package com.tubespjmfkel2.algorithm.graph;
+package com.tubespjmfkel2.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,4 +14,10 @@ public class Graph {
     public Set<Node> getNodes() {
         return nodes;
     }
+
+    public void resetAllNodes() {
+        for (Node n : nodes)
+            n.reset();
+    }
+
 }

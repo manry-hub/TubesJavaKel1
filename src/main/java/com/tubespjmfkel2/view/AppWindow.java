@@ -1,21 +1,19 @@
-package com.tubespjmfkel2.gui;
+package com.tubespjmfkel2.view;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.tubespjmfkel2.adapter.DijkstraAdapter;
-import com.tubespjmfkel2.adapter.DijkstraAdapter.Result;
-import com.tubespjmfkel2.gui.graph.GraphManager;
-import com.tubespjmfkel2.gui.graph.GraphPanel;
-import com.tubespjmfkel2.gui.graph.PathHighlighter;
+import com.tubespjmfkel2.controller.GraphController;
+import com.tubespjmfkel2.dto.DijkstraResult;
 
 public class AppWindow extends JFrame {
 
-    private GraphManager gm = new GraphManager();
+    private GraphController gm = new GraphController();
 
     public AppWindow() {
         super("Pencarian Rute Terpendek Menuju Bengkel");
@@ -23,15 +21,18 @@ public class AppWindow extends JFrame {
         JButton btnAddNode = new JButton("Tambah Titik Tempat");
         JButton btnAddEdge = new JButton("Tambah Jarak antar Titik");
         JButton btnFindPath = new JButton("Cari Rute Terpendek");
+        JButton btnReset = new JButton("Reset Semua");
 
         btnAddNode.addActionListener(e -> addNode());
         btnAddEdge.addActionListener(e -> addEdge());
         btnFindPath.addActionListener(e -> findPath());
+        btnReset.addActionListener(e -> resetAll());
 
         JPanel top = new JPanel();
         top.add(btnAddNode);
         top.add(btnAddEdge);
         top.add(btnFindPath);
+        top.add(btnReset);
 
         add(top, BorderLayout.NORTH);
         add(new GraphPanel(gm), BorderLayout.CENTER);
@@ -43,8 +44,10 @@ public class AppWindow extends JFrame {
 
     private void addNode() {
         String name = JOptionPane.showInputDialog("Nama Tempat:");
-        if (name != null && !name.isEmpty()) {
-            gm.addNode(name);
+
+        String result = gm.addNode(name);
+        if (result != null) {
+            JOptionPane.showMessageDialog(this, result);
         }
     }
 
@@ -52,37 +55,58 @@ public class AppWindow extends JFrame {
         String from = JOptionPane.showInputDialog("Dari:");
         String to = JOptionPane.showInputDialog("Menuju:");
         int w = Integer.parseInt(JOptionPane.showInputDialog("Jarak (km):"));
-        gm.addEdge(from, to, w);
+
+        String result = gm.addEdge(from, to, w);
+        if (result != null) {
+            JOptionPane.showMessageDialog(this, result);
+        }
+
     }
 
     private void findPath() {
         String start = JOptionPane.showInputDialog("Dari:");
         String end = JOptionPane.showInputDialog("Menuju:");
 
-        Result result = DijkstraAdapter.run(gm.adj, start, end);
+        DijkstraResult result = gm.runDijkstra(start, end);
 
         if (result == null) {
             JOptionPane.showMessageDialog(this, "Rute tidak ditemukan!");
             return;
         }
 
-        PathHighlighter.highlight(gm.graph, gm.parent, gm, result.path);
+        List<String> path = result.getPath();
+        int distance = result.getDistance();
+
+        PathHighlighter.highlight(gm.getGraph(), gm, path);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Rute Terpendek\n");
-        sb.append("Dari: ").append(start).append("\n");
-        sb.append("Menuju:   ").append(end).append("\n\n");
+        sb.append("Rute Terpendek\n")
+                .append("Dari: ").append(start).append("\n")
+                .append("Menuju: ").append(end).append("\n")
+                .append("Total Jarak: ").append(distance).append(" km\n\n")
+                .append("Urutan Rute:\n");
 
-        sb.append("Urutan Rute:\n");
-        for (int i = 0; i < result.path.size(); i++) {
-            sb.append(result.path.get(i));
-            if (i < result.path.size() - 1)
+        for (int i = 0; i < path.size(); i++) {
+            sb.append(path.get(i));
+            if (i < path.size() - 1) {
                 sb.append(" → ");
+            }
         }
 
-        sb.append("\n\nTotal Jarak: ").append(result.distance).append(" km");
-
         JOptionPane.showMessageDialog(this, sb.toString());
+    }
+
+    private void resetAll() {
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus semua seperti semula?",
+                "Konfirmasi Reset",
+                JOptionPane.YES_NO_OPTION);
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            gm.resetGraph();
+            repaint();
+        }
     }
 
 }

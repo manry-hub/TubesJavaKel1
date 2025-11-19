@@ -1,9 +1,10 @@
-package com.tubespjmfkel2.algorithm.dijkstra;
+package com.tubespjmfkel2.model;
 
-import java.util.*;
-
-import com.tubespjmfkel2.algorithm.graph.Graph;
-import com.tubespjmfkel2.algorithm.graph.Node;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Dijkstra {
 
