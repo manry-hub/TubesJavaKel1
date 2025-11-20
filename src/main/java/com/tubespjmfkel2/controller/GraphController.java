@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.mxgraph.view.mxGraph;
 import com.tubespjmfkel2.model.Graph;
-import com.tubespjmfkel2.model.Node;
+import com.tubespjmfkel2.model.Vertex;
 
 /**
  * Controller yang bertanggung jawab mengelola struktur graph,
@@ -15,15 +15,15 @@ import com.tubespjmfkel2.model.Node;
  * <p>
  * GraphController menyediakan operasi dasar seperti:
  * <ul>
- * <li>Menambah node</li>
+ * <li>Menambah vertex</li>
  * <li>Menambah edge dengan bobot</li>
- * <li>Mengambil node berdasarkan nama</li>
+ * <li>Mengambil vertex berdasarkan nama</li>
  * <li>Membersihkan graph</li>
  * </ul>
  *
  * <p>
  * Class ini menghubungkan antara struktur graph untuk
- * perhitungan algoritma (kelas {@link Graph} dan {@link Node})
+ * perhitungan algoritma (kelas {@link Graph} dan {@link Vertex})
  * serta representasi grafis pada GUI untuk tampilan visual.
  * </p>
  */
@@ -35,13 +35,13 @@ public class GraphController {
     /** Object graph visual dari mxGraph untuk ditampilkan ke UI. */
     private mxGraph uiGraph = new mxGraph();
 
-    /** Penyimpanan referensi edge UI berdasarkan pasangan node 'A->B'. */
+    /** Penyimpanan referensi edge UI berdasarkan pasangan vertex 'A->B'. */
     private Map<String, Object> edgeMap = new HashMap<>();
 
     /**
      * Mengambil objek graph inti yang digunakan algoritma.
      *
-     * @return objek {@link Graph} yang menyimpan struktur node dan edge.
+     * @return objek {@link Graph} yang menyimpan struktur vertex dan edge.
      */
     public Graph getCoreGraph() {
         return coreGraph;
@@ -67,30 +67,30 @@ public class GraphController {
     }
 
     /**
-     * Menambahkan sebuah node baru ke struktur graph dan tampilan UI.
+     * Menambahkan sebuah vertex baru ke struktur graph dan tampilan UI.
      *
      * <p>
      * Langkah yang dilakukan:
      * <ol>
-     * <li>Validasi nama node</li>
-     * <li>Memastikan node belum ada</li>
-     * <li>Membuat objek Node dan menambahkannya ke Graph</li>
-     * <li>Menggambar node pada UI (mxGraph)</li>
+     * <li>Validasi nama vertex</li>
+     * <li>Memastikan vertex belum ada</li>
+     * <li>Membuat objek {@link Vertex} dan menambahkannya ke Graph</li>
+     * <li>Menggambar vertex pada UI (mxGraph)</li>
      * </ol>
      * </p>
      *
-     * @param name nama node baru yang ingin ditambahkan
+     * @param name nama vertex baru yang ingin ditambahkan
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
-    public String addNode(String name) {
+    public String addVertex(String name) {
         if (name == null || name.trim().isEmpty())
-            return "Nama node tidak boleh kosong!";
+            return "Nama Titik Tempat tidak boleh kosong!";
 
-        if (findNode(name) != null)
-            return "Node '" + name + "' sudah ada!";
+        if (findVertexModel(name) != null)
+            return "Titik Tempat '" + name + "' sudah ada!";
 
-        Node node = new Node(name);
-        coreGraph.addNode(node);
+        Vertex vertex = new Vertex(name);
+        coreGraph.addVertex(vertex);
 
         uiGraph.getModel().beginUpdate();
         try {
@@ -114,50 +114,50 @@ public class GraphController {
      * <p>
      * Langkah yang dilakukan:
      * <ol>
-     * <li>Mengecek node asal dan tujuan</li>
+     * <li>Mengecek vertex asal dan tujuan</li>
      * <li>Mencegah self-loop</li>
      * <li>Mengecek bobot > 0</li>
-     * <li>Menambah edge pada struktur algoritma (Graph)</li>
-     * <li>Menggambar garis pada UI</li>
-     * <li>Menyimpan referensi edge untuk pewarnaan/pengolahan berikutnya</li>
+     * <li>Menambah edge pada struktur graph</li>
+     * <li>Menggambar edge pada UI</li>
+     * <li>Menyimpan referensi edge untuk pengolahan berikutnya</li>
      * </ol>
      *
-     * @param from   nama node asal
-     * @param to     nama node tujuan
+     * @param from   nama vertex asal
+     * @param to     nama vertex tujuan
      * @param weight bobot edge (> 0)
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
     public String addEdge(String from, String to, int weight) {
 
-        Node nFrom = findNode(from);
-        Node nTo = findNode(to);
+        Vertex vFrom = findVertexModel(from);
+        Vertex vTo = findVertexModel(to);
 
-        if (nFrom == null)
-            return "Node asal tidak ditemukan!";
-        if (nTo == null)
-            return "Node tujuan tidak ditemukan!";
+        if (vFrom == null)
+            return "Titik Tempat asal tidak ditemukan!";
+        if (vTo == null)
+            return "Titik Tempat tujuan tidak ditemukan!";
         if (from.equals(to))
-            return "Tidak boleh ke dirinya sendiri!";
+            return "Titik Tempat tidak boleh menuju dirinya sendiri!";
         if (weight <= 0)
             return "Bobot harus lebih besar dari 0!";
         if (edgeMap.containsKey(from + "->" + to))
-            return "Edge ini sudah ada!";
+            return "Rute ini sudah ada!";
 
         // Tambah ke struktur graph data
-        nFrom.addDestination(nTo, weight);
+        vFrom.addDestination(vTo, weight);
 
         // Tambah ke tampilan UI
         uiGraph.getModel().beginUpdate();
         try {
-            Object vFrom = findVertex(from);
-            Object vTo = findVertex(to);
+            Object uiFrom = findVertexUI(from);
+            Object uiTo = findVertexUI(to);
 
             Object edge = uiGraph.insertEdge(
                     uiGraph.getDefaultParent(),
                     null,
                     weight,
-                    vFrom,
-                    vTo);
+                    uiFrom,
+                    uiTo);
 
             edgeMap.put(from + "->" + to, edge);
 
@@ -169,30 +169,26 @@ public class GraphController {
     }
 
     /**
-     * Mencari objek node berdasarkan nama.
+     * Mencari objek Vertex pada model Graph berdasarkan nama.
      *
-     * @param name nama node
-     * @return objek {@link Node} jika ditemukan, atau {@code null} jika tidak ada
+     * @param name nama vertex
+     * @return objek {@link Vertex} jika ditemukan, atau {@code null} jika tidak ada
      */
-    public Node findNode(String name) {
-        return coreGraph.getNodes()
+    public Vertex findVertexModel(String name) {
+        return coreGraph.getVertices()
                 .stream()
-                .filter(n -> n.getName().equals(name))
+                .filter(v -> v.getName().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
     /**
-     * Mencari objek vertex mxGraph berdasarkan label (nama node).
+     * Mencari objek vertex di UI (mxGraph) berdasarkan label nama vertex.
      *
-     * <p>
-     * Digunakan saat menambahkan/memanipulasi edge di UI.
-     * </p>
-     *
-     * @param name nama node yang dicari
+     * @param name nama vertex yang dicari
      * @return objek vertex representasi di UI, atau {@code null} jika tidak ada
      */
-    private Object findVertex(String name) {
+    private Object findVertexUI(String name) {
         for (Object cell : uiGraph.getChildVertices(uiGraph.getDefaultParent())) {
             if (name.equals(uiGraph.getLabel(cell)))
                 return cell;
@@ -203,13 +199,13 @@ public class GraphController {
     /**
      * Mereset seluruh graph:
      * <ul>
-     * <li>Menghapus seluruh node dan edge di struktur algoritmik</li>
+     * <li>Menghapus seluruh vertex dan edge di struktur algoritmik</li>
      * <li>Menghapus seluruh tampilan vertex dan edge di UI</li>
      * <li>Membersihkan map penyimpanan edge</li>
      * </ul>
      *
      * <p>
-     * Digunakan saat merestart visualisasi atau memulai graph baru.
+     * Digunakan saat memulai graph baru atau mereset visualisasi.
      * </p>
      */
     public void resetGraph() {
@@ -218,7 +214,11 @@ public class GraphController {
 
         uiGraph.getModel().beginUpdate();
         try {
-            Object[] cells = uiGraph.getChildCells(uiGraph.getDefaultParent(), true, true);
+            Object[] cells = uiGraph.getChildCells(
+                    uiGraph.getDefaultParent(),
+                    true,
+                    true);
+
             if (cells != null && cells.length > 0)
                 uiGraph.removeCells(cells);
         } finally {

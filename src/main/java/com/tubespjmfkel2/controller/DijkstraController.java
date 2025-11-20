@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.tubespjmfkel2.dto.DijkstraResult;
 import com.tubespjmfkel2.model.Dijkstra;
-import com.tubespjmfkel2.model.Node;
+import com.tubespjmfkel2.model.Vertex;
 
 /**
  * Controller yang bertanggung jawab menjalankan proses perhitungan
@@ -35,60 +35,60 @@ public class DijkstraController {
     }
 
     /**
-     * Menjalankan algoritma Dijkstra dari simpul awal hingga simpul tujuan.
+     * Menjalankan algoritma Dijkstra dari vertex awal hingga vertex tujuan.
      *
      * <p>
      * Metode ini akan:
      * <ol>
-     * <li>Memvalidasi input nama node start dan end.</li>
-     * <li>Mengambil Node sebenarnnya dari Graph melalui GraphController.</li>
-     * <li>Melakukan reset seluruh node pada graph agar siap dihitung.</li>
+     * <li>Memvalidasi input nama vertex start dan end.</li>
+     * <li>Mengambil objek Vertex dari Graph melalui GraphController.</li>
+     * <li>Melakukan reset seluruh vertex pada graph agar siap dihitung.</li>
      * <li>Menjalankan algoritma Dijkstra.</li>
-     * <li>Jika ada jalur, mengumpulkan path menjadi daftar nama node.</li>
+     * <li>Jika ada jalur, mengumpulkan path menjadi daftar nama vertex.</li>
      * <li>Mengembalikan hasil dalam bentuk DTO {@link DijkstraResult}.</li>
      * </ol>
      * </p>
      *
-     * @param start nama node awal
-     * @param end   nama node tujuan
+     * @param start nama vertex awal
+     * @param end   nama vertex tujuan
      * @return objek {@link DijkstraResult} berisi path dan total jarak,
-     *         atau <code>null</code> jika node tidak valid atau tidak ada jalur.
+     *         atau <code>null</code> jika vertex tidak valid atau tidak ada jalur.
      */
     public DijkstraResult runDijkstra(String start, String end) {
 
         if (start == null || end == null)
             return null;
 
-        Node startNode = graphController.findNode(start);
-        Node endNode = graphController.findNode(end);
+        Vertex startVertex = graphController.findVertexModel(start);
+        Vertex endVertex = graphController.findVertexModel(end);
 
-        if (startNode == null || endNode == null)
+        if (startVertex == null || endVertex == null)
             return null;
 
         // Kasus start == end
         if (start.equals(end))
             return new DijkstraResult(Arrays.asList(start), 0);
 
-        // Reset dahulu semua node
-        graphController.getCoreGraph().resetAllNodes();
+        // Reset dahulu semua vertex
+        graphController.getCoreGraph().resetAllVertices();
 
         // Jalankan Dijkstra
         Dijkstra.calculateShortestPathFromSource(
                 graphController.getCoreGraph(),
-                startNode);
+                startVertex);
 
         // Jika unreachable
-        if (endNode.getDistance() == Integer.MAX_VALUE)
+        if (endVertex.getDistance() == Integer.MAX_VALUE)
             return null;
 
         // Bentuk path
         List<String> path = new ArrayList<>();
-        for (Node n : endNode.getShortestPath())
-            path.add(n.getName());
+        for (Vertex v : endVertex.getShortestPath())
+            path.add(v.getName());
 
         if (!path.contains(end))
             path.add(end);
 
-        return new DijkstraResult(path, endNode.getDistance());
+        return new DijkstraResult(path, endVertex.getDistance());
     }
 }

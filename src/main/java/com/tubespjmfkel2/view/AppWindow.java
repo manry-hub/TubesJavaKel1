@@ -19,7 +19,7 @@ import com.tubespjmfkel2.dto.DijkstraResult;
  * <p>
  * Kelas ini berfungsi sebagai:
  * <ul>
- * <li>Tempat interaksi pengguna seperti menambah node, menambah edge,
+ * <li>Tempat interaksi pengguna seperti menambah vertex, menambah edge,
  * menjalankan perhitungan rute terpendek, dan mereset grafik</li>
  * <li>Menghubungkan layer UI dengan controller logika aplikasi</li>
  * <li>Menampilkan visualisasi graph melalui {@link GraphPanel}</li>
@@ -27,7 +27,7 @@ import com.tubespjmfkel2.dto.DijkstraResult;
  *
  * <p>
  * Menggunakan Swing sebagai framework UI dan JGraphX sebagai library
- * visualisasi graf.
+ * visualisasi graph.
  * </p>
  */
 public class AppWindow extends JFrame {
@@ -38,7 +38,7 @@ public class AppWindow extends JFrame {
     /** Controller yang menangani proses perhitungan algoritma Dijkstra. */
     private final DijkstraController dijkstraController = new DijkstraController(graphController);
 
-    /** Panel utama untuk menampilkan graf dalam bentuk visual. */
+    /** Panel utama untuk menampilkan graph dalam bentuk visual. */
     private final GraphPanel graphPanel = new GraphPanel(graphController);
 
     /**
@@ -48,20 +48,20 @@ public class AppWindow extends JFrame {
         super("Pencarian Rute Terpendek Menuju Bengkel");
 
         // Tombol - tombol aksi
-        JButton btnAddNode = new JButton("Tambah Titik");
+        JButton btnAddVertex = new JButton("Tambah Titik Tempat");
         JButton btnAddEdge = new JButton("Tambah Jarak");
         JButton btnFindPath = new JButton("Cari Rute Terpendek");
         JButton btnReset = new JButton("Reset Semua");
 
         // Listener masing-masing tombol
-        btnAddNode.addActionListener(e -> addNode());
+        btnAddVertex.addActionListener(e -> addVertex());
         btnAddEdge.addActionListener(e -> addEdge());
         btnFindPath.addActionListener(e -> findPath());
         btnReset.addActionListener(e -> resetAll());
 
         // Panel yang menampung tombol
         JPanel top = new JPanel();
-        top.add(btnAddNode);
+        top.add(btnAddVertex);
         top.add(btnAddEdge);
         top.add(btnFindPath);
         top.add(btnReset);
@@ -78,20 +78,20 @@ public class AppWindow extends JFrame {
     }
 
     // ========================================================================
-    // Menambah Node
+    // Menambah Vertex
     // ========================================================================
 
     /**
-     * Menampilkan dialog input untuk menambah node baru pada graf.
-     * Jika input valid, node ditambahkan ke model dan tampilan diperbarui.
+     * Menampilkan dialog input untuk menambah vertex baru pada graf.
+     * Jika input valid, vertex ditambahkan ke model dan tampilan diperbarui.
      */
-    private void addNode() {
-        String name = JOptionPane.showInputDialog("Nama Tempat:");
+    private void addVertex() {
+        String name = JOptionPane.showInputDialog("Nama Titik Tempat:");
 
         if (name == null || name.trim().isEmpty())
             return;
 
-        String result = graphController.addNode(name);
+        String result = graphController.addVertex(name); // method tetap sama
 
         if (result != null)
             JOptionPane.showMessageDialog(this, result);
@@ -104,12 +104,12 @@ public class AppWindow extends JFrame {
     // ========================================================================
 
     /**
-     * Menambah hubungan (edge) antar dua node dengan bobot jarak.
+     * Menambah hubungan (edge) antar dua vertex dengan bobot jarak.
      * Menggunakan dialog untuk menerima input asal, tujuan, dan bobot.
      */
     private void addEdge() {
-        String from = JOptionPane.showInputDialog("Dari Node:");
-        String to = JOptionPane.showInputDialog("Menuju Node:");
+        String from = JOptionPane.showInputDialog("Dari Titik Tempat:");
+        String to = JOptionPane.showInputDialog("Menuju Titik Tempat:");
 
         if (from == null || to == null)
             return;
@@ -144,7 +144,7 @@ public class AppWindow extends JFrame {
      * <p>
      * Jika rute ditemukan:
      * <ul>
-     * <li>Graf ditandai (highlighting) pada jalur yang dilalui</li>
+     * <li>Graph ditandai (highlighting) pada jalur yang dilalui</li>
      * <li>Informasi rute dan total jarak ditampilkan dalam dialog</li>
      * </ul>
      *
@@ -154,8 +154,8 @@ public class AppWindow extends JFrame {
      */
     private void findPath() {
 
-        String start = JOptionPane.showInputDialog("Dari:");
-        String end = JOptionPane.showInputDialog("Menuju:");
+        String start = JOptionPane.showInputDialog("Dari Titik Tempat:");
+        String end = JOptionPane.showInputDialog("Menuju Titik Tempat:");
 
         if (start == null || end == null)
             return;
@@ -196,7 +196,7 @@ public class AppWindow extends JFrame {
     // ========================================================================
 
     /**
-     * Mereset seluruh graf dan tampilan visual menjadi kondisi awal.
+     * Mereset seluruh graph dan tampilan visual menjadi kondisi awal.
      * Akan menampilkan dialog konfirmasi sebelum memproses reset.
      */
     private void resetAll() {

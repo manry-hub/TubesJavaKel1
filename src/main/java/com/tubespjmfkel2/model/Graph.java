@@ -5,54 +5,55 @@ import java.util.Set;
 
 /**
  * Kelas Graph merepresentasikan struktur data graf sederhana
- * yang terdiri dari sekumpulan Node.
+ * yang terdiri dari sekumpulan Vertex.
  *
  * <p>
  * Graph ini tidak menyimpan struktur edge secara langsung,
- * karena setiap Node bertanggung jawab untuk menyimpan daftar
+ * karena setiap Vertex bertanggung jawab menyimpan daftar
  * ketetanggaannya sendiri. Dengan demikian, Graph hanya berfungsi
- * sebagai kontainer node.
+ * sebagai kontainer vertex.
  * </p>
  *
  * <h2>Fungsi Utama:</h2>
  * <ul>
- * <li><b>addNode(Node node)</b> – menambahkan node baru ke dalam graf.</li>
- * <li><b>getNodes()</b> – mengambil seluruh Node yang ada dalam graf.</li>
- * <li><b>resetAllNodes()</b> – mereset seluruh node ke nilai awal
- * (misalnya distance, visited flag, dll). Ini berguna setelah proses
- * algoritma seperti Dijkstra agar graf siap digunakan kembali.</li>
+ * <li><b>addVertex(Vertex vertex)</b> – menambahkan vertex baru ke dalam
+ * graf.</li>
+ * <li><b>getVertices()</b> – mengambil seluruh vertex yang ada dalam graf.</li>
+ * <li><b>resetAllVertices()</b> – mereset seluruh vertex ke nilai awal
+ * (misalnya distance, path, visited flag, dll). Ini berguna agar graf siap
+ * digunakan kembali setelah algoritma seperti Dijkstra dijalankan.</li>
  * </ul>
  */
 public class Graph {
 
-    private Set<Node> nodes = new HashSet<>();
+    private Set<Vertex> vertices = new HashSet<>();
 
     /**
-     * Menambahkan sebuah node ke dalam graf.
+     * Menambahkan sebuah vertex ke dalam graf.
      *
-     * @param node Node yang akan ditambahkan.
+     * @param vertex vertex yang akan ditambahkan.
      */
-    public void addNode(Node node) {
-        nodes.add(node);
+    public void addVertex(Vertex vertex) {
+        vertices.add(vertex);
     }
 
     /**
-     * Mengambil seluruh node yang tersimpan dalam graf.
+     * Mengambil seluruh vertex yang tersimpan dalam graf.
      *
-     * @return Set berisi objek Node.
+     * @return Set berisi objek Vertex.
      */
-    public Set<Node> getNodes() {
-        return nodes;
+    public Set<Vertex> getVertices() {
+        return vertices;
     }
 
     /**
-     * Mereset seluruh node pada graf agar dapat digunakan ulang
+     * Mereset seluruh vertex pada graf agar dapat digunakan ulang
      * dalam perhitungan algoritma. Metode ini akan memanggil
-     * method reset() pada setiap Node.
+     * method reset() pada setiap Vertex.
      */
-    public void resetAllNodes() {
-        for (Node n : nodes)
-            n.reset();
+    public void resetAllVertices() {
+        for (Vertex v : vertices)
+            v.reset();
     }
 
 }

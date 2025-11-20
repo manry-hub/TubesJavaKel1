@@ -9,8 +9,8 @@ import java.util.List;
  * <p>
  * Class ini merepresentasikan hasil berupa:
  * <ul>
- * <li>List urutan node yang membentuk rute terpendek</li>
- * <li>Total jarak (distance) yang ditempuh dari node awal ke akhir</li>
+ * <li>List urutan vertex yang membentuk rute terpendek</li>
+ * <li>Total jarak (distance) yang ditempuh dari vertex awal ke akhir</li>
  * </ul>
  *
  * <p>
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DijkstraResult {
 
-    /** List nama node dalam urutan rute terpendek. */
+    /** List nama vertex dalam urutan rute terpendek. */
     private final List<String> path;
 
     /** Total jarak (bobot) dari rute yang ditemukan. */
@@ -29,7 +29,7 @@ public class DijkstraResult {
     /**
      * Membuat instance baru hasil perhitungan Dijkstra.
      *
-     * @param path     daftar nama node yang membentuk rute terpendek
+     * @param path     daftar nama vertex yang membentuk rute terpendek
      * @param distance total bobot jarak dari rute tersebut
      */
     public DijkstraResult(List<String> path, int distance) {
@@ -38,9 +38,9 @@ public class DijkstraResult {
     }
 
     /**
-     * Mengambil urutan node yang membentuk rute terpendek.
+     * Mengambil urutan vertex yang membentuk rute terpendek.
      *
-     * @return daftar nama node sesuai urutan perjalanan
+     * @return daftar nama vertex sesuai urutan perjalanan
      */
     public List<String> getPath() {
         return path;

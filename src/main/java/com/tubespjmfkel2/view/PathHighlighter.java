@@ -18,17 +18,17 @@ import java.util.List;
 public class PathHighlighter {
 
     /**
-     * Menyorot jalur tertentu pada graf.
+     * Menyorot jalur tertentu pada graph.
      *
      * <p>
      * Semua edge akan dikembalikan ke style default (hitam) terlebih dahulu,
      * kemudian edge pada jalur yang diberikan akan diwarnai hijau dan ditebalkan.
      * </p>
      *
-     * @param graph           Graf yang akan dimodifikasi ({@link mxGraph}).
+     * @param graph           Graph yang akan dimodifikasi ({@link mxGraph}).
      * @param graphController Controller yang menyediakan mapping edge dan kontrol
-     *                        graf.
-     * @param path            Daftar nama node yang membentuk jalur yang akan
+     *                        graph.
+     * @param path            Daftar nama vertex yang membentuk jalur yang akan
      *                        disorot.
      */
     public static void highlight(mxGraph graph, GraphController graphController, List<String> path) {
@@ -42,7 +42,7 @@ public class PathHighlighter {
             // Sorot edge pada jalur
             for (int i = 0; i < path.size() - 1; i++) {
                 colorEdge(graph, graphController, path.get(i), path.get(i + 1));
-                colorEdge(graph, graphController, path.get(i + 1), path.get(i)); // jika graf bidirectional
+                colorEdge(graph, graphController, path.get(i + 1), path.get(i)); // jika graph bidirectional
             }
 
         } finally {
@@ -53,10 +53,10 @@ public class PathHighlighter {
     /**
      * Memberi warna hijau dan menebalkan edge tertentu.
      *
-     * @param graph           Graf yang dimodifikasi.
+     * @param graph           Graph yang dimodifikasi.
      * @param graphController Controller yang menyediakan mapping edge.
-     * @param from            Nama node awal edge.
-     * @param to              Nama node akhir edge.
+     * @param from            Nama vertex awal edge.
+     * @param to              Nama vertex akhir edge.
      */
     private static void colorEdge(mxGraph graph, GraphController graphController, String from, String to) {
         Object e = graphController.getEdgeMap().get(from + "->" + to);

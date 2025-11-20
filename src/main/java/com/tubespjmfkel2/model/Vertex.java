@@ -1,0 +1,87 @@
+package com.tubespjmfkel2.model;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Representasi dari sebuah simpul (vertex) dalam graph.
+ *
+ * Setiap vertex memiliki:
+ * <ul>
+ * <li>Nama unik</li>
+ * <li>Jarak saat ini dari vertex sumber (distance)</li>
+ * <li>Daftar vertex tetangga beserta bobot edge menuju tetangga tersebut</li>
+ * <li>Daftar jalur terpendek yang mengarah ke vertex ini</li>
+ * </ul>
+ *
+ * Kelas ini digunakan sebagai struktur data utama untuk menjalankan
+ * algoritma Dijkstra.
+ */
+public class Vertex {
+
+    /** Nama atau label unik dari vertex */
+    private final String name;
+
+    /** Daftar vertex yang menyusun jalur terpendek menuju vertex ini */
+    private List<Vertex> shortestPath = new LinkedList<>();
+
+    /** Jarak dari vertex sumber. Default = tak hingga */
+    private Integer distance = Integer.MAX_VALUE;
+
+    /** Daftar vertex tetangga beserta bobot edge menuju masing-masing tetangga */
+    private Map<Vertex, Integer> adjacentVertices = new HashMap<>();
+
+    /**
+     * Membuat instance vertex baru dengan nama tertentu.
+     *
+     * @param name nama unik vertex
+     */
+    public Vertex(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Menambahkan edge dari vertex ini menuju vertex lain dengan bobot tertentu.
+     *
+     * @param destination vertex tujuan
+     * @param distance    bobot edge
+     */
+    public void addDestination(Vertex destination, int distance) {
+        adjacentVertices.put(destination, distance);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Map<Vertex, Integer> getAdjacentVertices() {
+        return adjacentVertices;
+    }
+
+    public List<Vertex> getShortestPath() {
+        return shortestPath;
+    }
+
+    public void setShortestPath(List<Vertex> shortestPath) {
+        this.shortestPath = shortestPath;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * Mengembalikan status vertex ke kondisi awal sebelum perhitungan,
+     * yaitu jarak tak hingga dan path kosong.
+     */
+    public void reset() {
+        this.distance = Integer.MAX_VALUE;
+        this.shortestPath.clear();
+    }
+}

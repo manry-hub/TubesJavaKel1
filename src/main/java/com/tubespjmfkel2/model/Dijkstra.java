@@ -8,118 +8,119 @@ import java.util.Set;
 
 /**
  * Kelas ini mengimplementasikan algoritma Dijkstra untuk mencari
- * rute terpendek dari satu titik (source node) menuju seluruh node lain
- * di dalam sebuah graph berarah atau tak berarah dengan edge berbobot positif.
+ * rute terpendek dari satu titik (source vertex) menuju seluruh
+ * vertex lain di dalam sebuah graph berarah atau tak berarah
+ * dengan edge berbobot positif.
  *
- * Algoritma ini bekerja dengan cara:
+ * Cara kerja algoritma:
  * <ul>
- * <li>Menetapkan node sumber (source) sebagai jarak 0</li>
- * <li>Memilih node dengan jarak sementara (distance) terendah</li>
- * <li>Melakukan relaksasi jarak terhadap node tetangga</li>
- * <li>Memindahkan node tersebut ke dalam himpunan node yang telah diproses</li>
- * <li>Mengulangi hingga semua node telah diproses</li>
+ * <li>Menetapkan vertex sumber (source) sebagai jarak 0</li>
+ * <li>Memilih vertex dengan jarak sementara (distance) terendah</li>
+ * <li>Melakukan relaksasi jarak terhadap vertex tetangga</li>
+ * <li>Memindahkan vertex tersebut ke dalam himpunan yang telah diproses</li>
+ * <li>Mengulangi hingga seluruh vertex selesai diproses</li>
  * </ul>
  */
 public class Dijkstra {
 
     /**
      * Menjalankan algoritma Dijkstra untuk menghitung jarak terpendek
-     * dari node sumber (source) menuju seluruh node dalam graph.
+     * dari vertex sumber (source) menuju seluruh vertex dalam graph.
      *
-     * @param graph  graph yang berisi node serta edge dan bobotnya
-     * @param source node awal tempat proses pencarian rute dimulai
-     * @return graph yang sudah terisi informasi jarak terpendek pada setiap node
+     * @param graph  graph yang berisi vertex, edge, dan bobotnya
+     * @param source vertex awal tempat proses pencarian rute dimulai
+     * @return graph yang sudah terisi informasi jarak terpendek pada setiap vertex
      */
-    public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
+    public static Graph calculateShortestPathFromSource(Graph graph, Vertex source) {
 
-        // Node sumber memiliki jarak 0 sebagai titik awal
+        // Vertex sumber memiliki jarak 0 sebagai titik awal
         source.setDistance(0);
 
-        // Himpunan node yang sudah dipastikan jaraknya final
-        Set<Node> settledNodes = new HashSet<>();
+        // Himpunan vertex yang sudah dipastikan jaraknya final
+        Set<Vertex> settledVertices = new HashSet<>();
 
-        // Himpunan node yang masih harus diperiksa
-        Set<Node> unsettledNodes = new HashSet<>();
+        // Himpunan vertex yang masih harus diperiksa
+        Set<Vertex> unsettledVertices = new HashSet<>();
 
-        unsettledNodes.add(source);
+        unsettledVertices.add(source);
 
-        while (!unsettledNodes.isEmpty()) {
+        while (!unsettledVertices.isEmpty()) {
 
-            // Ambil node dengan jarak (distance) paling kecil
-            Node currentNode = getLowestDistanceNode(unsettledNodes);
-            unsettledNodes.remove(currentNode);
+            // Ambil vertex dengan jarak (distance) paling kecil
+            Vertex currentVertex = getLowestDistanceVertex(unsettledVertices);
+            unsettledVertices.remove(currentVertex);
 
-            // Periksa semua node tetangga dari node saat ini
-            for (Map.Entry<Node, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
+            // Periksa semua vertex tetangga dari vertex saat ini
+            for (Map.Entry<Vertex, Integer> adjacencyPair : currentVertex.getAdjacentVertices().entrySet()) {
 
-                Node adjacentNode = adjacencyPair.getKey();
+                Vertex adjacentVertex = adjacencyPair.getKey();
                 Integer edgeWeight = adjacencyPair.getValue();
 
                 // Jika tetangga belum dipastikan jaraknya, lakukan relaksasi
-                if (!settledNodes.contains(adjacentNode)) {
-                    calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
-                    unsettledNodes.add(adjacentNode);
+                if (!settledVertices.contains(adjacentVertex)) {
+                    calculateMinimumDistance(adjacentVertex, edgeWeight, currentVertex);
+                    unsettledVertices.add(adjacentVertex);
                 }
             }
 
-            // Node sudah selesai diproses
-            settledNodes.add(currentNode);
+            // Vertex sudah selesai diproses
+            settledVertices.add(currentVertex);
         }
 
         return graph;
     }
 
     /**
-     * Mengambil node dengan jarak (distance) terkecil dari himpunan node
+     * Mengambil vertex dengan jarak (distance) terkecil dari himpunan vertex
      * yang belum dipastikan jaraknya.
      *
-     * @param unsettledNodes daftar node yang masih perlu dihitung
-     * @return node dengan jarak terpendek
+     * @param unsettledVertices daftar vertex yang masih perlu dihitung
+     * @return vertex dengan jarak terpendek
      */
-    private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
+    private static Vertex getLowestDistanceVertex(Set<Vertex> unsettledVertices) {
 
-        Node lowestDistanceNode = null;
+        Vertex lowestDistanceVertex = null;
         int lowestDistance = Integer.MAX_VALUE;
 
-        // Telusuri semua node untuk menentukan jarak paling kecil
-        for (Node node : unsettledNodes) {
-            int nodeDistance = node.getDistance();
+        // Telusuri semua vertex untuk menentukan jarak paling kecil
+        for (Vertex vertex : unsettledVertices) {
+            int currentDistance = vertex.getDistance();
 
-            if (nodeDistance < lowestDistance) {
-                lowestDistance = nodeDistance;
-                lowestDistanceNode = node;
+            if (currentDistance < lowestDistance) {
+                lowestDistance = currentDistance;
+                lowestDistanceVertex = vertex;
             }
         }
 
-        return lowestDistanceNode;
+        return lowestDistanceVertex;
     }
 
     /**
-     * Melakukan proses relaksasi jarak terhadap node tetangga.
+     * Melakukan proses relaksasi jarak terhadap vertex tetangga.
      * Jika jarak (distance) baru lebih kecil dari jarak sebelumnya,
-     * maka jarak node di-update serta jalur terpendek diperbarui.
+     * maka jarak vertex di-update serta jalur terpendek diperbarui.
      *
-     * @param evaluationNode node tetangga yang sedang diperiksa
-     * @param edgeWeight     bobot edge dari sumber menuju node tetangga
-     * @param sourceNode     node sumber saat ini
+     * @param evaluationVertex vertex tetangga yang sedang dievaluasi
+     * @param edgeWeight       bobot edge dari sumber menuju vertex tetangga
+     * @param sourceVertex     vertex sumber saat ini
      */
     private static void calculateMinimumDistance(
-            Node evaluationNode,
+            Vertex evaluationVertex,
             Integer edgeWeight,
-            Node sourceNode) {
+            Vertex sourceVertex) {
 
-        Integer sourceDistance = sourceNode.getDistance();
+        Integer sourceDistance = sourceVertex.getDistance();
 
         // Jika jarak baru lebih kecil, lakukan update
-        if (sourceDistance + edgeWeight < evaluationNode.getDistance()) {
+        if (sourceDistance + edgeWeight < evaluationVertex.getDistance()) {
 
-            evaluationNode.setDistance(sourceDistance + edgeWeight);
+            evaluationVertex.setDistance(sourceDistance + edgeWeight);
 
-            // Salin path dari sumber dan tambahkan node ini
-            List<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
-            shortestPath.add(sourceNode);
+            // Salin path dari sumber dan tambahkan vertex saat ini
+            List<Vertex> shortestPath = new LinkedList<>(sourceVertex.getShortestPath());
+            shortestPath.add(sourceVertex);
 
-            evaluationNode.setShortestPath(shortestPath);
+            evaluationVertex.setShortestPath(shortestPath);
         }
     }
 
