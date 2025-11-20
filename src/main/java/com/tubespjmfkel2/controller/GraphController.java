@@ -127,7 +127,18 @@ public class GraphController {
      * @param weight bobot edge (> 0)
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
-    public String addEdge(String from, String to, int weight) {
+    public String addEdge(String from, String to, String weightStr) {
+
+        if (from == null || to == null || weightStr == null)
+            return "Input tidak boleh kosong!";
+
+        // cek validasi angka
+        int weight;
+        try {
+            weight = Integer.parseInt(weightStr);
+        } catch (NumberFormatException e) {
+            return "Bobot harus angka!";
+        }
 
         Vertex vFrom = findVertexModel(from);
         Vertex vTo = findVertexModel(to);
@@ -143,10 +154,10 @@ public class GraphController {
         if (edgeMap.containsKey(from + "->" + to))
             return "Rute ini sudah ada!";
 
-        // Tambah ke struktur graph data
+        // ADD KE MODEL
         vFrom.addDestination(vTo, weight);
 
-        // Tambah ke tampilan UI
+        // ADD KE UI
         uiGraph.getModel().beginUpdate();
         try {
             Object uiFrom = findVertexUI(from);
@@ -160,7 +171,6 @@ public class GraphController {
                     uiTo);
 
             edgeMap.put(from + "->" + to, edge);
-
         } finally {
             uiGraph.getModel().endUpdate();
         }

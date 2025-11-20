@@ -88,13 +88,10 @@ public class AppWindow extends JFrame {
     private void addVertex() {
         String name = JOptionPane.showInputDialog("Nama Titik Tempat:");
 
-        if (name == null || name.trim().isEmpty())
-            return;
+        String error = graphController.addVertex(name);
 
-        String result = graphController.addVertex(name); // method tetap sama
-
-        if (result != null)
-            JOptionPane.showMessageDialog(this, result);
+        if (error != null)
+            JOptionPane.showMessageDialog(this, error);
 
         graphPanel.refresh();
     }
@@ -110,26 +107,12 @@ public class AppWindow extends JFrame {
     private void addEdge() {
         String from = JOptionPane.showInputDialog("Dari Titik Tempat:");
         String to = JOptionPane.showInputDialog("Menuju Titik Tempat:");
+        String w = JOptionPane.showInputDialog("Jarak (km):");
 
-        if (from == null || to == null)
-            return;
+        String error = graphController.addEdge(from, to, w);
 
-        String weightStr = JOptionPane.showInputDialog("Jarak (km):");
-        if (weightStr == null)
-            return;
-
-        int weight;
-        try {
-            weight = Integer.parseInt(weightStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Bobot harus angka!");
-            return;
-        }
-
-        String result = graphController.addEdge(from, to, weight);
-
-        if (result != null)
-            JOptionPane.showMessageDialog(this, result);
+        if (error != null)
+            JOptionPane.showMessageDialog(this, error);
 
         graphPanel.refresh();
     }
@@ -156,9 +139,6 @@ public class AppWindow extends JFrame {
 
         String start = JOptionPane.showInputDialog("Dari Titik Tempat:");
         String end = JOptionPane.showInputDialog("Menuju Titik Tempat:");
-
-        if (start == null || end == null)
-            return;
 
         DijkstraResult result = dijkstraController.runDijkstra(start, end);
 
