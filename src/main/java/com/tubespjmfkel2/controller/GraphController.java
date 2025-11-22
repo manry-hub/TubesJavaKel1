@@ -124,7 +124,7 @@ public class GraphController {
      *
      * @param from   nama vertex asal
      * @param to     nama vertex tujuan
-     * @param weight bobot edge (> 0)
+     * @param weightStr bobot edge (> 0)
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
     public String addEdge(String from, String to, String weightStr) {

@@ -14,7 +14,7 @@ import com.tubespjmfkel2.model.entity.Vertex;
  * rute terpendek dari satu titik (source vertex) menuju seluruh
  * vertex lain di dalam sebuah graph berarah atau tak berarah
  * dengan edge berbobot positif.
- *
+ * <p>
  * Cara kerja algoritma:
  * <ul>
  * <li>Menetapkan vertex sumber (source) sebagai jarak 0</li>
