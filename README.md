@@ -11,24 +11,21 @@ requirement: jdk 17 + jgraphx 3.9.3
 ```
 tubespjmfkel2
 ├── controller
-│   ├── DijkstraController.java          # Mengatur logika algoritma Dijkstra, komunikasi antara model dan view
-│   └── GraphController.java             # Mengatur graf secara umum, menyimpan node, edge, dan menyediakan data untuk UI
+│   ├── DijkstraController.java       # Menjalankan Dijkstra + komunikasi Model ↔ View
+│   └── GraphController.java          # Mengatur graph (vertex, edge)
 ├── dto
-│   └── DijkstraResult.java              # Data Transfer Object untuk menampung hasil algoritma Dijkstra (path dan jarak)
-├── Main.java                            # Titik masuk aplikasi, menjalankan AppWindow pada Event Dispatch Thread
+│   └── DijkstraResult.java           # DTO hasil perhitungan (path + distance)
+├── Main.java                         # Entry point aplikasi
 ├── model
 │   ├── algorithm
-│   │   └── Dijkstra.java                # Implementasi algoritma Dijkstra murni (logika perhitungan path terpendek)
+│   │   └── Dijkstra.java             # Algoritma Dijkstra murni
 │   └── entity
-│       ├── Graph.java                   # Representasi struktur graf (vertex, edges)
-│       └── Vertex.java                  # Representasi vertex pada graf
+│       ├── Edge.java                 # Representasi edge & bobot
+│       ├── Graph.java                # Struktur graf: adjacency, daftar vertex
+│       └── Vertex.java               # Representasi vertex
 └── view
-    ├── component
-    │   └── GraphPanel.java              # Panel yang menampilkan graf menggunakan JGraphX
-    ├── layout
-    │   └── MainFrame.java               # Frame utama aplikasi, menampung GraphPanel dan kontrol GUI
-    └── util
-        └── PathHighlighter.java         # Utility untuk menyorot jalur tertentu pada graf (highlight path)
+    ├── GraphFrame.java               # Frame utama aplikasi
+    └── GraphPanel.java               # Panel visual graf + background maps
 ```
 
 ## 1. `Main.java`
