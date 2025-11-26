@@ -52,7 +52,7 @@ public class DijkstraController {
      * @param inputStartVertex nama vertex awal
      * @param inputEndVertex   nama vertex tujuan
      * @return objek {@link DijkstraResult} berisi path dan total jarak,
-     *         atau <code>null</code> jika vertex tidak valid atau tidak ada jalur.
+     * atau <code>null</code> jika vertex tidak valid atau tidak ada jalur.
      */
     public DijkstraResult runDijkstra(String inputStartVertex, String inputEndVertex) {
 
@@ -64,7 +64,7 @@ public class DijkstraController {
 
         // Kasus start == end
         if (inputStartVertex.equals(inputEndVertex))
-            return new DijkstraResult(Arrays.asList(inputStartVertex), 0);
+            return new DijkstraResult(List.of(inputStartVertex), 0);
 
         // Reset dahulu semua vertex
         graphController.getCoreGraph().resetAllVertices();
@@ -81,10 +81,12 @@ public class DijkstraController {
 
         // Bentuk path
         List<String> path = new ArrayList<>();
+
+        // Masukkan node hasil shortestPath
         for (Vertex v : endVertex.getShortestPath()) {
             path.add(v.getVertex());
         }
-
+        path.add(endVertex.getVertex());
         return new DijkstraResult(path, endVertex.getDistance());
     }
 }

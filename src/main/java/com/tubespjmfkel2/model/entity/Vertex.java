@@ -29,7 +29,7 @@ public class Vertex {
     /** Jarak dari vertex sumber. Default = tak hingga */
     private Integer distance = Integer.MAX_VALUE;
 
-    private List<Edge> edges = new ArrayList<>();
+    private final List<Edge> edges = new ArrayList<>();
 
 
 
@@ -42,9 +42,10 @@ public class Vertex {
         this.vertex = vertex;
     }
 
-    public void addEdge(Vertex destination, int weight) {
-        edges.add(new Edge(this, destination, weight));
+    public void addEdge(Edge edge) {
+        edges.add(edge);
     }
+
 
     public List<Edge> getEdges() {
         return edges;

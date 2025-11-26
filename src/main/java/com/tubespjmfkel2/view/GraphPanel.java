@@ -18,9 +18,6 @@ import java.awt.BorderLayout;
  */
 public class GraphPanel extends JPanel {
 
-    /** Controller yang menangani logika graf dan data graf */
-    private final GraphController graphController;
-
     /** Komponen graf yang menampilkan graf secara visual */
     private final mxGraphComponent graphComponent;
 
@@ -37,7 +34,7 @@ public class GraphPanel extends JPanel {
      *                        untuk mengelola graf yang akan ditampilkan.
      */
     public GraphPanel(GraphController graphController) {
-        this.graphController = graphController;
+        /** Controller yang menangani logika graf dan data graf */
         setLayout(new BorderLayout());
 
         // Membuat dan menambahkan komponen graf ke panel

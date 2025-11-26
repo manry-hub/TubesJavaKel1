@@ -12,13 +12,13 @@ package com.tubespjmfkel2.model.entity;
 public class Edge {
 
     /** Simpul asal dari edge */
-    private Vertex source;
+    private final Vertex source;
 
     /** Simpul tujuan dari edge */
-    private Vertex destination;
+    private final Vertex destination;
 
     /** Bobot atau jarak yang merepresentasikan biaya dari source ke destination */
-    private int weight;
+    private final int weight;
 
     /**
      * Membuat sebuah edge baru yang menghubungkan dua simpul dengan bobot tertentu.

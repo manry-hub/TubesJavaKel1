@@ -19,10 +19,10 @@ import java.util.Set;
 public class Graph {
 
     /** Kumpulan seluruh simpul dalam graf */
-    private Set<Vertex> vertices = new HashSet<>();
+    private final Set<Vertex> vertices = new HashSet<>();
 
     /** Kumpulan seluruh edge dalam graf */
-    private List<Edge> edges = new ArrayList<>();
+    private final List<Edge> edges = new ArrayList<>();
 
     /**
      * Menambahkan sebuah simpul baru ke dalam graf.
@@ -45,8 +45,10 @@ public class Graph {
     public void addEdge(Vertex source, Vertex destination, int weight) {
         Edge edge = new Edge(source, destination, weight);
         edges.add(edge);
-        source.addEdge(destination, weight);
+        source.addEdge(edge); // simpan edge yang sama, bukan buat baru
     }
+
+
 
     /**
      * Mengembalikan seluruh simpul dalam graf.

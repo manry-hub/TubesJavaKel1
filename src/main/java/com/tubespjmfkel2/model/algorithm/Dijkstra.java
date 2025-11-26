@@ -115,7 +115,6 @@ public class Dijkstra {
             // Salin path dari sumber dan tambahkan vertex saat ini
             List<Vertex> shortestPath = new LinkedList<>(sourceVertex.getShortestPath());
             shortestPath.add(sourceVertex);
-            shortestPath.add(evaluationVertex);
 
             evaluationVertex.setShortestPath(shortestPath);
         }
