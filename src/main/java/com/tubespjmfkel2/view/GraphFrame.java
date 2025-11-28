@@ -209,7 +209,7 @@ public class GraphFrame extends JFrame {
         try {
             // Reset semua edge ke style default
             graphController.getEdgeMap().forEach((k, e) -> {
-                graph.setCellStyle("strokeColor=black;strokeWidth=1;", new Object[] { e });
+                graph.setCellStyle("strokeColor=red;strokeWidth=1;endArrow=none;", new Object[] { e });
             });
 
             // Sorot edge pada jalur
