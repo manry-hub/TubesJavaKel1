@@ -29,17 +29,22 @@ import com.tubespjmfkel2.model.entity.Vertex;
  */
 public class GraphController {
 
-    /** Struktur graph inti untuk perhitungan algoritmik. */
-    private Graph coreGraph = new Graph();
-
-    /** Object graph visual dari mxGraph untuk ditampilkan ke UI. */
+    /**
+     * Object graph visual dari mxGraph untuk ditampilkan ke UI.
+     */
     private final mxGraph uiGraph = new mxGraph();
-
-    /** Penyimpanan referensi edge UI berdasarkan pasangan vertex 'A->B'. */
-    private final Map<String, Object> edgeMap = new HashMap<>();
-
-    /** Mapping vertex UI: "A" → UI Vertex Object */
+    /**
+     * Penyimpanan referensi edge UI berdasarkan pasangan vertex 'A->B'.
+     */
+    private final Map<String, Object> edgeUIMap = new HashMap<>();
+    /**
+     * Mapping vertex UI: "A" → UI Vertex Object
+     */
     private final Map<String, Object> vertexUIMap = new HashMap<>();
+    /**
+     * Struktur graph inti untuk perhitungan algoritmik.
+     */
+    private Graph coreGraph = new Graph();
 
     /**
      * Mengambil objek graph inti yang digunakan algoritma.
@@ -65,33 +70,10 @@ public class GraphController {
      *
      * @return Map edge yang dipetakan berdasarkan format "From->To".
      */
-    public Map<String, Object> getEdgeMap() {
-        return edgeMap;
+    public Map<String, Object> getEdgeUIMap() {
+        return edgeUIMap;
     }
 
-    /**
-     * Mencari objek Vertex pada model Graph berdasarkan nama.
-     *
-     * @param inputVertex nama vertex
-     * @return objek {@link Vertex} jika ditemukan, atau {@code null} jika tidak ada
-     */
-    public Vertex findVertexModel(String inputVertex) {
-        return coreGraph.getVertices()
-                .stream()
-                .filter(v -> v.getVertex().equals(inputVertex))
-                .findFirst()
-                .orElse(null);
-    }
-
-    /**
-     * Mencari objek vertex di UI (mxGraph) berdasarkan label nama vertex.
-     *
-     * @param inputVertex nama vertex yang dicari
-     * @return objek vertex representasi di UI, atau {@code null} jika tidak ada
-     */
-    private Object findVertexUI(String inputVertex) {
-        return vertexUIMap.get(inputVertex);
-    }
 
     /**
      * Menambahkan sebuah vertex baru ke struktur graph dan tampilan UI.
@@ -182,7 +164,7 @@ public class GraphController {
             return "Titik Tempat tidak boleh menuju dirinya sendiri!";
         if (weight <= 0)
             return "Bobot harus lebih besar dari 0!";
-        if (edgeMap.containsKey(inputFrom + "->" + inputTo))
+        if (edgeUIMap.containsKey(inputFrom + "->" + inputTo))
             return "Rute ini sudah ada!";
 
         // tambah edge pada graph baru
@@ -202,14 +184,38 @@ public class GraphController {
                     uiTo,
                     "endArrow=none;strokeColor=black;"
 
-                    );
+            );
 
-            edgeMap.put(inputFrom + "->" + inputTo, uiEdge);
+            edgeUIMap.put(inputFrom + "->" + inputTo, uiEdge);
         } finally {
             uiGraph.getModel().endUpdate();
         }
 
         return null;
+    }
+
+    /**
+     * Mencari objek Vertex pada model Graph berdasarkan nama.
+     *
+     * @param inputVertex nama vertex
+     * @return objek {@link Vertex} jika ditemukan, atau {@code null} jika tidak ada
+     */
+    public Vertex findVertexModel(String inputVertex) {
+        return coreGraph.getVertices()
+                .stream()
+                .filter(v -> v.getVertex().equals(inputVertex))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Mencari objek vertex di UI (mxGraph) berdasarkan label nama vertex.
+     *
+     * @param inputVertex nama vertex yang dicari
+     * @return objek vertex representasi di UI, atau {@code null} jika tidak ada
+     */
+    private Object findVertexUI(String inputVertex) {
+        return vertexUIMap.get(inputVertex);
     }
 
     /**
@@ -226,7 +232,7 @@ public class GraphController {
      */
     public void resetGraph() {
         coreGraph = new Graph(); // reset struktur algoritmik
-        edgeMap.clear();
+        edgeUIMap.clear();
         vertexUIMap.clear();
 
         uiGraph.getModel().beginUpdate();

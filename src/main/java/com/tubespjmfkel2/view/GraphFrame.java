@@ -33,13 +33,19 @@ import com.tubespjmfkel2.dto.DijkstraResult;
  */
 public class GraphFrame extends JFrame {
 
-    /** Controller yang menangani operasi graph model dan UI graph. */
+    /**
+     * Controller yang menangani operasi graph model dan UI graph.
+     */
     private final GraphController graphController = new GraphController();
 
-    /** Controller yang menangani proses perhitungan algoritma Dijkstra. */
+    /**
+     * Controller yang menangani proses perhitungan algoritma Dijkstra.
+     */
     private final DijkstraController dijkstraController = new DijkstraController(graphController);
 
-    /** Panel utama untuk menampilkan graph dalam bentuk visual. */
+    /**
+     * Panel utama untuk menampilkan graph dalam bentuk visual.
+     */
     private final GraphPanel graphPanel = new GraphPanel(graphController);
 
     /**
@@ -82,6 +88,62 @@ public class GraphFrame extends JFrame {
     // Menambah Vertex
     // ========================================================================
 
+
+    /**
+     * Menyorot jalur tertentu pada graph.
+     *
+     * <p>
+     * Semua edge akan dikembalikan ke style default (hitam) terlebih dahulu,
+     * kemudian edge pada jalur yang diberikan akan diwarnai hijau dan ditebalkan.
+     * </p>
+     *
+     * @param graph           Graph yang akan dimodifikasi ({@link mxGraph}).
+     * @param graphController Controller yang menyediakan mapping edge dan kontrol
+     *                        graph.
+     * @param path            Daftar nama vertex yang membentuk jalur yang akan
+     *                        disorot.
+     */
+    public static void highlightPath(mxGraph graph, GraphController graphController, List<String> path) {
+        graph.getModel().beginUpdate();
+        try {
+            // Reset semua edge ke style default
+            graphController.getEdgeUIMap().forEach((k, e) -> {
+                graph.setCellStyle("strokeColor=red;strokeWidth=1;endArrow=none;", new Object[]{e});
+            });
+
+            // Sorot edge pada jalur
+            for (int i = 0; i < path.size() - 1; i++) {
+                colorEdge(graph, graphController, path.get(i), path.get(i + 1));
+            }
+
+        } finally {
+            graph.getModel().endUpdate();
+        }
+    }
+
+    // ========================================================================
+    // Menambah Edge
+    // ========================================================================
+
+    /**
+     * Memberi warna hijau dan menebalkan edge tertentu.
+     *
+     * @param graph           Graph yang dimodifikasi.
+     * @param graphController Controller yang menyediakan mapping edge.
+     * @param from            Nama vertex awal edge.
+     * @param to              Nama vertex akhir edge.
+     */
+    private static void colorEdge(mxGraph graph, GraphController graphController, String from, String to) {
+        Object e = graphController.getEdgeUIMap().get(from + "->" + to);
+        if (e != null) {
+            graph.setCellStyle("strokeColor=green;strokeWidth=3;endArrow=none;", new Object[]{e});
+        }
+    }
+
+    // ========================================================================
+    // Menjalankan Dijkstra
+    // ========================================================================
+
     /**
      * Menampilkan dialog input untuk menambah vertex baru pada graf.
      * Jika input valid, vertex ditambahkan ke model dan tampilan diperbarui.
@@ -92,13 +154,13 @@ public class GraphFrame extends JFrame {
         String error = graphController.addVertex(inputVertex);
 
         if (error != null)
-            JOptionPane.showMessageDialog(this, error);
+            JOptionPane.showMessageDialog(null, error);
 
         graphPanel.refresh();
     }
 
     // ========================================================================
-    // Menambah Edge
+    // Reset Seluruh Data
     // ========================================================================
 
     /**
@@ -113,14 +175,10 @@ public class GraphFrame extends JFrame {
         String error = graphController.addEdge(inputFrom, InputTo, inputWeight);
 
         if (error != null)
-            JOptionPane.showMessageDialog(this, error);
+            JOptionPane.showMessageDialog(null, error);
 
         graphPanel.refresh();
     }
-
-    // ========================================================================
-    // Menjalankan Dijkstra
-    // ========================================================================
 
     /**
      * Menjalankan perhitungan rute terpendek menggunakan algoritma Dijkstra.
@@ -144,14 +202,14 @@ public class GraphFrame extends JFrame {
         DijkstraResult result = dijkstraController.runDijkstra(inputStartVertex, inputEndVertex);
 
         if (result == null) {
-            JOptionPane.showMessageDialog(this, "Rute tidak ditemukan!");
+            JOptionPane.showMessageDialog(null, "Rute tidak ditemukan!");
             return;
         }
 
         List<String> path = result.getPath();
         int distance = result.getDistance();
 
-        // 🔥 Panggil internal highlight (sudah digabung)
+        // Panggil internal highlight (sudah digabung)
         highlightPath(graphController.getUiGraph(), graphController, path);
         StringBuilder sb = new StringBuilder();
         sb.append("Rute Terpendek\n")
@@ -166,12 +224,8 @@ public class GraphFrame extends JFrame {
                 sb.append(" → ");
         }
 
-        JOptionPane.showMessageDialog(this, sb.toString());
+        JOptionPane.showMessageDialog(null, sb.toString());
     }
-
-    // ========================================================================
-    // Reset Seluruh Data
-    // ========================================================================
 
     /**
      * Mereset seluruh graph dan tampilan visual menjadi kondisi awal.
@@ -179,7 +233,7 @@ public class GraphFrame extends JFrame {
      */
     private void resetAll() {
         int confirm = JOptionPane.showConfirmDialog(
-                this,
+                null,
                 "Yakin ingin mereset semua?",
                 "Konfirmasi",
                 JOptionPane.YES_NO_OPTION);
@@ -187,53 +241,6 @@ public class GraphFrame extends JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             graphController.resetGraph();
             graphPanel.refresh();
-        }
-    }
-
-    /**
-     * Menyorot jalur tertentu pada graph.
-     *
-     * <p>
-     * Semua edge akan dikembalikan ke style default (hitam) terlebih dahulu,
-     * kemudian edge pada jalur yang diberikan akan diwarnai hijau dan ditebalkan.
-     * </p>
-     *
-     * @param graph           Graph yang akan dimodifikasi ({@link mxGraph}).
-     * @param graphController Controller yang menyediakan mapping edge dan kontrol
-     *                        graph.
-     * @param path            Daftar nama vertex yang membentuk jalur yang akan
-     *                        disorot.
-     */
-    public static void highlightPath(mxGraph graph, GraphController graphController, List<String> path) {
-        graph.getModel().beginUpdate();
-        try {
-            // Reset semua edge ke style default
-            graphController.getEdgeMap().forEach((k, e) -> {
-                graph.setCellStyle("strokeColor=red;strokeWidth=1;endArrow=none;", new Object[] { e });
-            });
-
-            // Sorot edge pada jalur
-            for (int i = 0; i < path.size() - 1; i++) {
-                colorEdge(graph, graphController, path.get(i), path.get(i + 1));
-            }
-
-        } finally {
-            graph.getModel().endUpdate();
-        }
-    }
-
-    /**
-     * Memberi warna hijau dan menebalkan edge tertentu.
-     *
-     * @param graph           Graph yang dimodifikasi.
-     * @param graphController Controller yang menyediakan mapping edge.
-     * @param from            Nama vertex awal edge.
-     * @param to              Nama vertex akhir edge.
-     */
-    private static void colorEdge(mxGraph graph, GraphController graphController, String from, String to) {
-        Object e = graphController.getEdgeMap().get(from + "->" + to);
-        if (e != null) {
-            graph.setCellStyle("strokeColor=green;strokeWidth=3;endArrow=none;", new Object[] { e });
         }
     }
 }

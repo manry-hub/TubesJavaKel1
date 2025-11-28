@@ -39,17 +39,20 @@ public class Dijkstra {
         Set<Vertex> unsettledVertices = new HashSet<>();
 
         unsettledVertices.add(source);
+//jima pada saat vertex yang belum mapan itu masih ada
+//        akan melakukan yang namanaya evaluasi
 
         while (!unsettledVertices.isEmpty()) {
-
+// vertex yang belum mapan itu akan dimasukan kedalam current vertex melalui method getLowsetDistanceVertex
             Vertex currentVertex = getLowestDistanceVertex(unsettledVertices);
+//           vertex saat ini dihapus dari unsetlled vertex, jadi tidak perlu di looping lagi
             unsettledVertices.remove(currentVertex);
-
+// loop edge untuk currentvertexnya
             for (Edge edge : currentVertex.getEdges()) {
-
+// edge tujuan akan dimasukan kedalam tetangga
                 Vertex adjacent = edge.getDestination();
                 int weight = edge.getWeight();
-
+//
                 if (!settledVertices.contains(adjacent)) {
                     calculateMinimumDistance(adjacent, weight, currentVertex);
                     unsettledVertices.add(adjacent);
@@ -71,19 +74,24 @@ public class Dijkstra {
      */
     private static Vertex getLowestDistanceVertex(Set<Vertex> unsettledVertices) {
 
+//        belum ada vertex terbaik dan di set null
         Vertex lowestDistanceVertex = null;
+//        untuk nilai sementara adalah infinity
         int lowestDistance = Integer.MAX_VALUE;
 
         // Telusuri semua vertex untuk menentukan jarak paling kecil
         for (Vertex vertex : unsettledVertices) {
+            // ambil distance vertex
             int currentDistance = vertex.getDistance();
 
             if (currentDistance < lowestDistance) {
+//                masukan vertex kedalam lowest distance
                 lowestDistance = currentDistance;
+//                masukan vertex yang di loop kedalam lowest distance vertex
                 lowestDistanceVertex = vertex;
             }
         }
-
+// balikan nilai hasil dari lowestDistanceVertex (current vertex)
         return lowestDistanceVertex;
     }
 

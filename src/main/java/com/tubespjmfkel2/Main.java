@@ -26,5 +26,11 @@ public class Main {
     public static void main(String[] args) {
         // Menjalankan GUI pada Event Dispatch Thread
         SwingUtilities.invokeLater(GraphFrame::new);
+        int i = 0;
+        while (i < 9){
+            System.out.println(i);
+            i++;
+            System.out.println(i);
+        }
     }
 }
