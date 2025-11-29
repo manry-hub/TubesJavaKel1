@@ -40,6 +40,7 @@ public class GraphPanel extends JPanel {
         // Membuat dan menambahkan komponen graf ke panel
         graphComponent = new mxGraphComponent(graphController.getUiGraph());
         add(graphComponent, BorderLayout.CENTER);
+        graphComponent.setConnectable(false);
     }
 
     /**

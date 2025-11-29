@@ -31,7 +31,7 @@ import com.tubespjmfkel2.dto.DijkstraResult;
  * visualisasi graph.
  * </p>
  */
-public class GraphFrame extends JFrame {
+public class MainFrame extends JFrame {
 
     /**
      * Controller yang menangani operasi graph model dan UI graph.
@@ -51,7 +51,7 @@ public class GraphFrame extends JFrame {
     /**
      * Konstruktor utama yang menginisialisasi jendela, tombol menu, dan panel graf.
      */
-    public GraphFrame() {
+    public MainFrame() {
         super("Pencarian Rute Terpendek Menuju Bengkel");
 
         // Tombol - tombol aksi
@@ -67,15 +67,15 @@ public class GraphFrame extends JFrame {
         btnReset.addActionListener(e -> resetAll());
 
         // Panel yang menampung tombol
-        JPanel top = new JPanel();
-        top.add(btnAddVertex);
-        top.add(btnAddEdge);
-        top.add(btnFindPath);
-        top.add(btnReset);
+        JPanel topPanel = new JPanel();
+        topPanel.add(btnAddVertex);
+        topPanel.add(btnAddEdge);
+        topPanel.add(btnFindPath);
+        topPanel.add(btnReset);
 
         // Layout utama jendela
         setLayout(new BorderLayout());
-        add(top, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH);
         add(graphPanel, BorderLayout.CENTER);
 
         setSize(900, 600);

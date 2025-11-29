@@ -1,14 +1,14 @@
 package com.tubespjmfkel2;
 
 import javax.swing.SwingUtilities;
-import com.tubespjmfkel2.view.GraphFrame;
+import com.tubespjmfkel2.view.MainFrame;
 
 /**
  * Titik masuk (entry point) dari aplikasi.
  * 
  * <p>
  * Class ini hanya berfungsi untuk menjalankan aplikasi Swing
- * dengan membuat instance {@link GraphFrame} pada Event Dispatch Thread (EDT).
+ * dengan membuat instance {@link MainFrame} pada Event Dispatch Thread (EDT).
  * </p>
  * 
  * <p>
@@ -25,6 +25,6 @@ public class Main {
      */
     public static void main(String[] args) {
         // Menjalankan GUI pada Event Dispatch Thread
-        SwingUtilities.invokeLater(GraphFrame::new);
+        SwingUtilities.invokeLater(MainFrame::new);
     }
 }
