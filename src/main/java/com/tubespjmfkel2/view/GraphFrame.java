@@ -148,9 +148,9 @@ public class GraphFrame extends JFrame {
      * Jika input valid, vertex ditambahkan ke model dan tampilan diperbarui.
      */
     private void addVertex() {
-        String inputVertex = JOptionPane.showInputDialog("Nama Titik Tempat:");
+        String inputVertexName = JOptionPane.showInputDialog("Nama Titik Tempat:");
 
-        String error = graphController.addVertexName(inputVertex);
+        String error = graphController.addVertexName(inputVertexName);
 
         if (error != null)
             JOptionPane.showMessageDialog(null, error);
@@ -167,11 +167,11 @@ public class GraphFrame extends JFrame {
      * Menggunakan dialog untuk menerima input asal, tujuan, dan bobot.
      */
     private void addEdge() {
-        String inputFrom = JOptionPane.showInputDialog("Dari Titik Tempat:");
-        String InputTo = JOptionPane.showInputDialog("Menuju Titik Tempat:");
+        String inputNameFrom = JOptionPane.showInputDialog("Dari Titik Tempat:");
+        String InputVertexTo = JOptionPane.showInputDialog("Menuju Titik Tempat:");
         String inputWeight = JOptionPane.showInputDialog("Jarak (km):");
 
-        String error = graphController.addEdge(inputFrom, InputTo, inputWeight);
+        String error = graphController.addEdge(inputNameFrom, InputVertexTo, inputWeight);
 
         if (error != null)
             JOptionPane.showMessageDialog(null, error);
