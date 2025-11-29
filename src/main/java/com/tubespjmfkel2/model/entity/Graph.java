@@ -45,10 +45,10 @@ public class Graph {
     /**
      * Menambahkan sebuah simpul baru ke dalam graf.
      *
-     * @param vertex Vertex baru yang akan ditambahkan
+     * @param vertexName Vertex baru yang akan ditambahkan
      */
-    public void addVertex(Vertex vertex) {
-        vertices.add(vertex);
+    public void addVertex(Vertex vertexName) {
+        vertices.add(vertexName);
     }
 
     /**

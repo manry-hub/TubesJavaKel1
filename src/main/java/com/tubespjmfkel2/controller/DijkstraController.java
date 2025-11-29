@@ -56,8 +56,8 @@ public class DijkstraController {
      */
     public DijkstraResult findShortestPath(String inputStartVertex, String inputEndVertex) {
 
-        Vertex startVertex = graphController.findVertexModel(inputStartVertex);
-        Vertex endVertex = graphController.findVertexModel(inputEndVertex);
+        Vertex startVertex = graphController.findVertexName(inputStartVertex);
+        Vertex endVertex = graphController.findVertexName(inputEndVertex);
 
         if (startVertex == null || endVertex == null)
             return null;

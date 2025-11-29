@@ -150,7 +150,7 @@ public class GraphFrame extends JFrame {
     private void addVertex() {
         String inputVertex = JOptionPane.showInputDialog("Nama Titik Tempat:");
 
-        String error = graphController.addVertex(inputVertex);
+        String error = graphController.addVertexName(inputVertex);
 
         if (error != null)
             JOptionPane.showMessageDialog(null, error);

@@ -87,18 +87,18 @@ public class GraphController {
      * </ol>
      * </p>
      *
-     * @param inputVertex nama vertex baru yang ingin ditambahkan
+     * @param inputVertexName nama vertex baru yang ingin ditambahkan
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
-    public String addVertex(String inputVertex) {
-        if (inputVertex == null || inputVertex.trim().isEmpty())
+    public String addVertexName(String inputVertexName) {
+        if (inputVertexName == null || inputVertexName.trim().isEmpty())
             return "Nama Titik Tempat tidak boleh kosong!";
 
-        if (findVertexModel(inputVertex) != null)
-            return "Titik Tempat '" + inputVertex + "' sudah ada!";
+        if (findVertexName(inputVertexName) != null)
+            return "Titik Tempat '" + inputVertexName + "' sudah ada!";
 
-        Vertex vertex = new Vertex(inputVertex);
-        graph.addVertex(vertex);
+        Vertex vertexName = new Vertex(inputVertexName);
+        graph.addVertex(vertexName);
 
         Object uiVertex;
         uiGraph.getModel().beginUpdate();
@@ -106,7 +106,7 @@ public class GraphController {
             uiVertex = uiGraph.insertVertex(
                     uiGraph.getDefaultParent(),
                     null,
-                    inputVertex,
+                    inputVertexName,
                     50, 50,
                     60, 60,
                     "shape=ellipse");
@@ -114,7 +114,7 @@ public class GraphController {
             uiGraph.getModel().endUpdate();
         }
 
-        uiVertexMap.put(inputVertex, uiVertex);
+        uiVertexMap.put(inputVertexName, uiVertex);
 
         return null;
     }
@@ -133,14 +133,14 @@ public class GraphController {
      * <li>Menyimpan referensi edge untuk pengolahan berikutnya</li>
      * </ol>
      *
-     * @param inputFrom   nama vertex asal
-     * @param inputTo     nama vertex tujuan
-     * @param inputWeight bobot edge (> 0)
+     * @param inputVertexNameFrom nama vertex asal
+     * @param inputVertexNameTo   nama vertex tujuan
+     * @param inputWeight         bobot edge (> 0)
      * @return pesan error jika gagal, atau {@code null} jika berhasil
      */
-    public String addEdge(String inputFrom, String inputTo, String inputWeight) {
+    public String addEdge(String inputVertexNameFrom, String inputVertexNameTo, String inputWeight) {
 
-        if (inputFrom == null || inputTo == null || inputWeight == null)
+        if (inputVertexNameFrom == null || inputVertexNameTo == null || inputWeight == null)
             return "Input tidak boleh kosong!";
 
         // cek validasi angka
@@ -151,18 +151,19 @@ public class GraphController {
             return "Bobot harus angka!";
         }
 
-        Vertex vFrom = findVertexModel(inputFrom);
-        Vertex vTo = findVertexModel(inputTo);
+        Vertex vFrom = findVertexName(inputVertexNameFrom);
+        Vertex vTo = findVertexName(inputVertexNameTo);
+        String edgeKey = inputVertexNameFrom + "->" + inputVertexNameTo;
 
         if (vFrom == null)
             return "Titik Tempat asal tidak ditemukan!";
         if (vTo == null)
             return "Titik Tempat tujuan tidak ditemukan!";
-        if (inputFrom.equals(inputTo))
+        if (inputVertexNameFrom.equals(inputVertexNameTo))
             return "Titik Tempat tidak boleh menuju dirinya sendiri!";
         if (weight <= 0)
             return "Bobot harus lebih besar dari 0!";
-        if (uiEdgeMap.containsKey(inputFrom + "->" + inputTo))
+        if (uiEdgeMap.containsKey(edgeKey))
             return "Rute ini sudah ada!";
 
         // tambah edge pada graph baru
@@ -171,8 +172,8 @@ public class GraphController {
         // ADD KE UI
         uiGraph.getModel().beginUpdate();
         try {
-            Object uiFrom = findVertexUI(inputFrom);
-            Object uiTo = findVertexUI(inputTo);
+            Object uiFrom = findVertexUI(inputVertexNameFrom);
+            Object uiTo = findVertexUI(inputVertexNameTo);
 
             Object uiEdge = uiGraph.insertEdge(
                     uiGraph.getDefaultParent(),
@@ -184,7 +185,7 @@ public class GraphController {
 
             );
 
-            uiEdgeMap.put(inputFrom + "->" + inputTo, uiEdge);
+            uiEdgeMap.put(edgeKey, uiEdge);
         } finally {
             uiGraph.getModel().endUpdate();
         }
@@ -198,7 +199,7 @@ public class GraphController {
      * @param inputVertex nama vertex
      * @return objek {@link Vertex} jika ditemukan, atau {@code null} jika tidak ada
      */
-    public Vertex findVertexModel(String inputVertex) {
+    public Vertex findVertexName(String inputVertex) {
         return graph.getVertices()
                 .stream()
                 .filter(v -> v.getVertexName().equals(inputVertex))
