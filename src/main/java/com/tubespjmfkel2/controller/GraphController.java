@@ -44,7 +44,7 @@ public class GraphController {
     /**
      * Struktur graph inti untuk perhitungan algoritmik.
      */
-    private Graph graph = new Graph();
+    private final Graph graph = new Graph();
 
     /**
      * Mengambil objek graph inti yang digunakan algoritma.
