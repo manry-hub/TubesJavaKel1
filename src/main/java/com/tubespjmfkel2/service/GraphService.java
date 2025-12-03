@@ -29,58 +29,25 @@ import com.tubespjmfkel2.domain.Vertex;
  */
 public class GraphService {
 
-    /**
-     * Object graph visual dari mxGraph untuk ditampilkan ke UI.
-     */
+
     private mxGraph uiGraph = new mxGraph();
-    /**
-     * Penyimpanan referensi edge UI berdasarkan pasangan vertex 'A->B'.
-     */
     private Map<String, Object> uiEdgeMap = new HashMap<>();
-    /**
-     * Mapping vertex UI: "A" → UI Vertex Object
-     */
     private Map<String, Object> uiVertexMap = new HashMap<>();
-    /**
-     * Struktur graph inti untuk perhitungan algoritmik.
-     */
     private Graph graph = new Graph();
 
 
-    /**
-     * Mengambil objek visual mxGraph untuk ditampilkan dalam UI.
-     *
-     * @return instance {@link mxGraph}
-     */
     public mxGraph getUiGraph() {
         return uiGraph;
     }
 
-    /**
-     * Mengambil map penyimpanan reference edge yang
-     * digunakan untuk pewarnaan atau modifikasi tampilan edge.
-     *
-     * @return Map edge yang dipetakan berdasarkan format "From->To".
-     */
     public Map<String, Object> getUiEdgeMap() {
         return uiEdgeMap;
     }
 
-    /**
-     * Mencari objek vertex di UI (mxGraph) berdasarkan label nama vertex.
-     *
-     * @param vertexNameInput nama vertex yang dicari
-     * @return objek vertex representasi di UI, atau {@code null} jika tidak ada
-     */
     private Object getUiVertex(String vertexNameInput) {
         return uiVertexMap.get(vertexNameInput);
     }
 
-    /**
-     * Mengambil objek graph inti yang digunakan algoritma.
-     *
-     * @return objek {@link Graph} yang menyimpan struktur vertex dan edge.
-     */
     public Graph getGraph() {
         return graph;
     }
@@ -155,7 +122,6 @@ public class GraphService {
         if (vertexSourceInput == null || vertexDestinationInput == null || weightInput == null)
             return "Input tidak boleh kosong!";
 
-        // cek validasi angka
         int weight;
         try {
             weight = Integer.parseInt(weightInput);
@@ -179,10 +145,8 @@ public class GraphService {
         if (uiEdgeMap.containsKey(edgeKey1) || uiEdgeMap.containsKey(edgeKey2))
             return "Rute ini sudah ada!";
 
-        // tambah edge pada graph baru
         graph.addEdge(vertexSource, vertexDestination, weight);
 
-        // ADD KE UI
         uiGraph.getModel().beginUpdate();
         try {
             Object uiVertexSource = getUiVertex(vertexSourceInput);
@@ -249,7 +213,6 @@ public class GraphService {
 
         uiGraph.getModel().beginUpdate();
         try {
-            // Hapus semua vertex & edge di UI
             uiGraph.removeCells(
                     uiGraph.getChildCells(uiGraph.getDefaultParent(), true, true),
                     true);

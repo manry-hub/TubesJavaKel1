@@ -16,11 +16,6 @@ import org.apache.commons.csv.CSVFormat;
 import com.mxgraph.layout.mxFastOrganicLayout;
 
 
-/**
- * Kelas utama antarmuka grafis (GUI) aplikasi pencarian rute terpendek
- * menggunakan algoritma Dijkstra.
- */
-
 public class GUI extends JFrame {
 
     /**
@@ -119,13 +114,6 @@ public class GUI extends JFrame {
         }
     }
 
-    /**
-     * Menampilkan dialog untuk menambah vertex baru ke graph.
-     *
-     * <p>
-     * Melakukan validasi melalui GraphController dan refresh UI jika selesai.
-     * </p>
-     */
     private void addVertex() {
         String vertexNameInput = JOptionPane.showInputDialog("Nama Titik Tempat:");
         String error = graphService.addVertex(vertexNameInput);
@@ -134,13 +122,6 @@ public class GUI extends JFrame {
         refreshGraph();
     }
 
-    /**
-     * Menampilkan dialog untuk menambah edge baru beserta bobot jaraknya.
-     *
-     * <p>
-     * Menghubungkan 2 vertex yang sudah ada dengan weight bertipe numerik (km).
-     * </p>
-     */
     private void addEdge() {
         String vertexSourceInput = JOptionPane.showInputDialog("Dari Titik Tempat:");
         String vertexDestinationInput = JOptionPane.showInputDialog("Menuju Titik Tempat:");
@@ -151,22 +132,6 @@ public class GUI extends JFrame {
         refreshGraph();
     }
 
-    /**
-     * Menjalankan proses pencarian rute terpendek dari start ke end.
-     *
-     * <p>
-     * Jika rute tersedia:
-     * <ul>
-     * <li>Menandai path di graph UI</li>
-     * <li>Menampilkan total jarak</li>
-     * <li>Menampilkan urutan vertex</li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * Jika tidak, menampilkan pesan error.
-     * </p>
-     */
     private void findPath() {
         String vertexStartInput = JOptionPane.showInputDialog("Dari Titik Tempat:");
         String vertexEndInput = JOptionPane.showInputDialog("Menuju Titik Tempat:");
