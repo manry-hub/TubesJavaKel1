@@ -1,22 +1,29 @@
 package com.tubespjmfkel2.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
 
+import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxRectangle;
 import com.mxgraph.view.mxGraph;
-import com.mxgraph.layout.hierarchical.*;
 
 import com.tubespjmfkel2.service.GraphService;
 import com.tubespjmfkel2.service.DijkstraService;
 import com.tubespjmfkel2.dto.DijkstraResult;
 
 import org.apache.commons.csv.CSVFormat;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class GUI extends JFrame {
 
@@ -45,9 +52,9 @@ public class GUI extends JFrame {
 
         btnAddVertex.addActionListener(e -> addVertex());
         btnAddEdge.addActionListener(e -> addEdge());
+        btnImportCSV.addActionListener(e -> importCSV());
         btnFindPath.addActionListener(e -> findPath());
         btnReset.addActionListener(e -> resetAll());
-        btnImportCSV.addActionListener(e -> importCSV());
 
         JPanel headerPanel = new JPanel();
         headerPanel.add(btnAddVertex);
@@ -243,8 +250,8 @@ public class GUI extends JFrame {
     }
 
 
-    private void colorEdge(String src, String dst) {
-        Object edge = uiEdgeMap.get(src + "->" + dst);
+    private void colorEdge(String source, String destination) {
+        Object edge = uiEdgeMap.get(source + "->" + destination);
         if (edge != null) {
             uiGraph.setCellStyle(
                     "strokeColor=green;strokeWidth=3;endArrow=none;rounded=true;",
@@ -281,28 +288,28 @@ public class GUI extends JFrame {
 
     }
 
-    public void autoCenterGraph(mxGraph graph, mxGraphComponent graphComponent) {
+    public void autoCenterGraph(mxGraph uiGraph, mxGraphComponent graphComponent) {
         SwingUtilities.invokeLater(() -> {
             Dimension size = graphComponent.getSize();
             if (size.width == 0 || size.height == 0) return;
 
-            mxRectangle bounds = graph.getGraphBounds();
+            mxRectangle bounds = uiGraph.getGraphBounds();
             if (bounds == null) return;
 
             double dx = (size.getWidth() - bounds.getWidth()) / 2 - bounds.getX();
             double dy = (size.getHeight() - bounds.getHeight()) / 2 - bounds.getY();
 
-            Object parent = graph.getDefaultParent();
-            Object[] cells = graph.getChildCells(parent, true, true);
+            Object parent = uiGraph.getDefaultParent();
+            Object[] cells = uiGraph.getChildCells(parent, true, true);
 
-            graph.getModel().beginUpdate();
+            uiGraph.getModel().beginUpdate();
             try {
-                graph.moveCells(cells, dx, dy);
+                uiGraph.moveCells(cells, dx, dy);
             } finally {
-                graph.getModel().endUpdate();
+                uiGraph.getModel().endUpdate();
             }
 
-            graph.refresh();
+            uiGraph.refresh();
         });
     }
 
