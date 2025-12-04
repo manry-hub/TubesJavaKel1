@@ -1,6 +1,11 @@
 package com.tubespjmfkel2.view;
 
-import java.awt.*;
+
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

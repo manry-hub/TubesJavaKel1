@@ -1,7 +1,22 @@
 package com.tubespjmfkel2.view;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import java.awt.Frame;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
 
 public class WelcomeFrame extends JFrame {
 
@@ -82,6 +97,7 @@ public class WelcomeFrame extends JFrame {
             );
         }
     }
+
 
     // ==============================
     // GRADIENT BACKGROUND PANEL
