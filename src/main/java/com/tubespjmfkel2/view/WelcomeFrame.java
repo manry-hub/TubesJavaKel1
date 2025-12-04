@@ -37,9 +37,7 @@ public class WelcomeFrame extends JFrame {
             dispose();
         });
 
-        btnImport.addActionListener(e -> {
-            importCsv();
-        });
+        btnImport.addActionListener(e -> importCsv());
 
         btnImport.setPreferredSize(new Dimension(180, 40));
         btnMasuk.setPreferredSize(new Dimension(180, 40));
