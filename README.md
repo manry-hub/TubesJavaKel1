@@ -24,29 +24,84 @@ Struktur ini mengikuti **pattern MVC (Model–View–Controller)**:
 
 ```
 tubespjmfkel2
-├── service
-│   ├── DijkstraService.java          # Menjalankan Dijkstra
-│   └── GraphService.java             # Mengatur graph (vertex, edge)
-├── dto
-│   └── DijkstraResult.java           # DTO hasil perhitungan (path + distance)
-├── Main.java                         # Entry point aplikasi
-├── model
-│   ├── algorithm
-│   │   └── Dijkstra.java             # Algoritma Dijkstra murni
-│   └── entity
-│       ├── Edge.java                 # Representasi edge & bobot
-│       ├── Graph.java                # Struktur graf: daftar vertex dan Edge
-│       └── Vertex.java               # Representasi vertex
-└── GUI.java                          # GUI yang berisi Frame dan Panel
+├── algorithm                         
+│   └── Dijkstra.java                 # Implementasi murni algoritma Dijkstra
+│
+├── domain                            
+│   ├── Edge.java                     # Kelas edge: menghubungkan dua vertex + bobot
+│   ├── Graph.java                    # Struktur graf: menyimpan vertex & edge
+│   └── Vertex.java                   # Representasi vertex/simpul dalam graf
+│
+├── dto                               
+│   └── DijkstraResult.java           # DTO hasil perhitungan Dijkstra (jarak + path)
+│
+├── service                           
+│   ├── DijkstraService.java          # Service untuk menjalankan algoritma Dijkstra
+│   └── GraphService.java             # Service untuk manajemen graf (add vertex/edge)
+│
+├── TubesPJMFkel2Application.java     # Entry point aplikasi (main program)
+│
+└── view                              
+    ├── asset                         # Folder aset gambar untuk GUI
+    │   └── icon                      # Folder ikon tempat/objek pada peta
+    ├── MainFrame.java                # GUI utama: input, visualisasi, output Dijkstra
+    └── WelcomeFrame.java             # GUI awal (welcome screen) sebelum masuk ke main
+
 ```
 
-## 1. `Main.java`
+## 1. `Dijkstra.java`
 
-Merupakan kelas awal eksekusi aplikasi (`entry point`).
-Kelas ini hanya berisi method:
+Implementasi murni algoritma Dijkstra:
 
 ```java
-public static void main(String[] args)
+
+public class Dijkstra {
+    public static void calculateShortestPathFromSource(Vertex source) {
+        source.setDistance(0);
+        Set<Vertex> settledVertices = new HashSet<>();
+        Set<Vertex> unsettledVertices = new HashSet<>();
+        unsettledVertices.add(source);
+        while (!unsettledVertices.isEmpty()) {
+            Vertex currentVertex = getLowestDistanceVertex(unsettledVertices);
+            unsettledVertices.remove(currentVertex);
+            for (Edge edge : currentVertex.getNeighbors()) {
+                Vertex neighbor = edge.getOpposite(currentVertex);
+                int weight = edge.getWeight();
+                if (!settledVertices.contains(neighbor)) {
+                    calculateMinimumDistance(neighbor, weight, currentVertex);
+                    unsettledVertices.add(neighbor);
+                }
+            }
+            settledVertices.add(currentVertex);
+        }
+    }
+
+    private static Vertex getLowestDistanceVertex(Set<Vertex> unsettledVertices) {
+        Vertex lowestDistanceVertex = null;
+        int lowestDistance = Integer.MAX_VALUE;
+        for (Vertex vertex : unsettledVertices) {
+            int currentDistance = vertex.getDistance();
+            if (currentDistance < lowestDistance) {
+                lowestDistance = currentDistance;
+                lowestDistanceVertex = vertex;
+            }
+        }
+        return lowestDistanceVertex;
+    }
+
+    private static void calculateMinimumDistance(
+            Vertex evaluationVertex,
+            Integer edgeWeight,
+            Vertex currentVertex) {
+        Integer sourceDistance = currentVertex.getDistance();
+        if (sourceDistance + edgeWeight < evaluationVertex.getDistance()) {
+            evaluationVertex.setDistance(sourceDistance + edgeWeight);
+            List<Vertex> shortestPath = new ArrayList<>(currentVertex.getShortestPath());
+            shortestPath.add(currentVertex);
+            evaluationVertex.setShortestPath(shortestPath);
+        }
+    }
+}
 ```
 
 yang bertanggung jawab memulai tampilan utama (`GUI`).
