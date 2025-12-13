@@ -117,12 +117,14 @@ public class MainFrame extends JFrame {
     private Image loadImage() {
         try {
             return ImageIO.read(new File(
-                    "/home/ughway/Debiancode/Myprojects/TubesPJMFKel2/src/main/java/com/tubespjmfkel2/view/asset/BackgroundWhite.png"));
+                    "src/main/java/com/tubespjmfkel2/view/asset/BackgroundWhite.png"
+            ));
         } catch (Exception e) {
             System.out.println("Gagal load image: " + e.getMessage());
             return null;
         }
     }
+
 
     public boolean importCSV(String path) {
         try (var reader = new java.io.FileReader(path)) {
